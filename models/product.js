@@ -16,7 +16,7 @@ const fetchDatafromFile = cb => {
 }
 
 module.exports = class Product {
-    constructor(title) {
+    constructor(title,imageUrl,description,price) {
         this.title = title;
     }
 
