@@ -55,7 +55,9 @@ sync()
     }
     // return Promise.resolve(user);
     return user;
-}).then(result => {
+}).then(user => {
     // console.log(result);
+    user.createCart();
+}).then(cart => {
     app.listen(3000);
 }).catch(err=> console.log(err));
