@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('node-complete', 'root', 'shobhit', { dialect: 'mysql', host: 'localhost',port: '6900' });
+const sequelize = new Sequelize('node-project', 'root', '', { dialect: 'mysql', host: 'localhost' });
 
 module.exports = sequelize;
