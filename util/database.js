@@ -3,11 +3,11 @@ const MongoClient = mongodb.MongoClient;
 
 let _db;
 
-const MongoConnect = (callback) => {
+const mongoConnect = callback => {
     MongoClient.connect('mongodb+srv://shobhit:shobhit@cluster0.fqruj.mongodb.net/shop?retryWrites=true&w=majority')
         .then(client => {
-            console.log('connected!');
-            _db = client.db;
+            console.log('Connected!');
+            _db = client.db();
             callback();
         })
         .catch(err => {
@@ -17,11 +17,11 @@ const MongoConnect = (callback) => {
 };
 
 const getDb = () => {
-    if(_db){
+    if (_db) {
         return _db;
     }
-    throw 'No Database found';
-}
+    throw 'No database found!';
+};
 
-exports.MongoConnect = MongoConnect;
+exports.mongoConnect = mongoConnect;
 exports.getDb = getDb;
