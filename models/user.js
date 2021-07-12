@@ -19,6 +19,17 @@ class User {
             .catch(err => console.log(err));
     }
 
+    deleteItemfromCart(productId) {
+        const updatedCartItems = this.cart.items.filter(item => {
+            return item.productId.toString() !== productId.toString();
+        });
+        const db = getDb();
+        return db.collection('users').updateOne(
+            { _id: new mongoDb.ObjectId(this._id) },
+            { $set: { cart: {items: updatedCartItems} } }
+        )
+    }
+
     getCart() {
         const db = getDb();
         const productIds = this.cart.items.map(i => i.productId);
@@ -27,11 +38,12 @@ class User {
             .find({ _id: { $in: productIds } })
             .toArray()
             .then(products => {
-                return products.map( p => {
-                    return {...p,quantity: this.cart.items.find(i => {
-                        return i.productId.toString() === p._id.toString();
-                    }).quantity
-                }
+                return products.map(p => {
+                    return {
+                        ...p, quantity: this.cart.items.find(i => {
+                            return i.productId.toString() === p._id.toString();
+                        }).quantity
+                    }
                 })
             })
     }
