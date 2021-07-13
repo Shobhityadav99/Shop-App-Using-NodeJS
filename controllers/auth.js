@@ -8,11 +8,18 @@ exports.getLogin = (req, res, next) => {
     });
 };
 exports.postLogin = (req, res, next) => {
-        User.findById("60ec58b7790d49104cd1446a")
+    User.findById("60ec58b7790d49104cd1446a")
         .then(user => {
-                req.session.isLoggedIn = true;
-                req.session.user = user;
-                res.redirect('/');
-            })
-            .catch(err => console.log(err));
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            res.redirect('/');
+        })
+        .catch(err => console.log(err));
+};
+
+exports.postLogout = (req, res, next) => {
+    req.session.destroy((err) => {
+        console.log(err);
+        res.redirect('/');
+    });
 };
