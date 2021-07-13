@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 const mongoose = require('mongoose');
+const session = require('express-session');
 
 const app = express();
 
