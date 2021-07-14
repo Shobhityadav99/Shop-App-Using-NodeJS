@@ -13,13 +13,7 @@ router.get('/signup', authController.getSignup);
 router.post('/login',[
     check('email')
         .isEmail()
-        .withMessage('Please enter a valid Email')
-        .custom((value, { req }) => {
-            return User.findOne({ email: value })
-                .then(userDoc => {
-                    return Promise.reject('E-Mail exists already, please pick a different one.');
-                })
-        }),
+        .withMessage('Please enter a valid Email'),
     body('password', 'Please enter a paswword with only numbers and text and at least 5 characters')
         .isLength({ min: 5 })
         .isAlphanumeric(),
