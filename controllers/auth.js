@@ -146,7 +146,7 @@ exports.postReset = (req,res,next) => {
       return user.save();
     }).then(result => {
       res.redirect('/');
-          transport.sendMail({
+          return transport.sendMail({
             to: req.body.email,
             from: 'shobhit999000@gmail.com',
             subject: 'Password Reset',
@@ -158,5 +158,27 @@ exports.postReset = (req,res,next) => {
     }).catch(err => {
       console.log(err)
     })
+  })
+}
+
+exports.getNewpassword = (req,res,next) => {
+  const token = req.params.token;
+  User.findOne({resetToken: token, resetTokenExpiration: {$gt: Date.now()}})
+  .then(user => {
+    let message = req.flash('error');
+    if (message.length > 0) {
+      message = message[0];
+    } else {
+      message = null;
+    }
+    res.render('auth/new-password', {
+      path: '/new-password',
+      pageTitle: 'New Password',
+      errorMessage: message,
+      userId: user._id.toString()
+    });
+  })
+  .catch(err => {
+    console.log(err);
   })
 }
