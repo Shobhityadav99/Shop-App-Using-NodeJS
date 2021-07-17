@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const Product = require('../models/product');
 const Order = require('../models/order');
-const pdfkit = require('pdfkit');
+const PDFDocument = require('pdfkit');
 
 exports.getProducts = (req, res, next) => {
   Product.find()
@@ -161,7 +161,15 @@ exports.getInvoice = (req,res,next) => {
         return next(new Error("Unauthorised"));
       }
       const invoiceName = 'invoice-'+orderId+".pdf";
-      const invoicePath = path.join('data','invoices'+invoiceName);
+      const invoicePath = path.join('data','invoices',invoiceName);
+
+      const pdfDoc = new PDFDocument();
+      res.setHeader('Content-Type','application/pdf');
+        res.setHeader('Content-Disposition','attachment; filename="' + invoiceName+ '"');
+      pdfDoc.pipe(fs.createWriteStream(invoicePath));
+      pdfDoc.pipe(res);
+      pdfDoc.text('Heelo Bhamiya');
+      pdfDoc.end();
       // fs.readFile(invoicePath, (err,data) => {
       //   if(err){
       //     return next(err);
@@ -170,11 +178,9 @@ exports.getInvoice = (req,res,next) => {
       //   res.setHeader('Content-Disposition','attachment; filename="' + invoiceName+ '"');
       //   res.send(data);
       // })
-      const file = fs.createReadStream(invoicePath);
-      res.setHeader('Content-Type','application/pdf');
-        res.setHeader('Content-Disposition','attachment; filename="' + invoiceName+ '"');
-        res.send(data);
-      file.pipe(res);
+      // const file = fs.createReadStream(invoicePath);
+      
+      // file.pipe(res);
     }
   ).catch(err => next(err));
 }
