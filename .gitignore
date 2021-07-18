@@ -1,3 +1,4 @@
 node_modules
 /controllers/auth.js
 /images
+/shop.js
